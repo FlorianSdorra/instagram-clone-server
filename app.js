@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-const mongoose= require('mongoose');
+import mongoose from 'mongoose';
 const PORT = 5000;
-const {MONGO_URI} = require('./keys')
+import MONGO_URI  from './keys.js';
 
 
 mongoose.connect(MONGO_URI,{
