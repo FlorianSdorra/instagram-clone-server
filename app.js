@@ -2,8 +2,8 @@ import express from 'express';
 const app = express();
 import mongoose from 'mongoose';
 const PORT = 5000;
-import MONGO_URI  from './keys.js';
-
+import KEYS  from './keys.js';
+const { MONGO_URI } = KEYS;
 import User from './models/user.js';
 import userRouter from './routes/User.js';
 
