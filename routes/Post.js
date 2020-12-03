@@ -7,6 +7,7 @@ import Post from '../models/post.js';
 
 router.get('/allposts', (req,res)=>{
     Post.find()
+    .populate('postedBy', 'id, name')
     .then(posts=>{
         res.json({posts})
     })
