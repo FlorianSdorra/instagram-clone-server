@@ -25,7 +25,6 @@ mongoose.connection.on('error',(err)=>{
 app.use(express.json());
 app.use(userRouter, postRouter);
 
-
 app.listen(PORT, ()=>{
     console.log("server is running on port", PORT)
 });

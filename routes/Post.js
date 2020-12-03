@@ -5,6 +5,16 @@ import requiredLogin from '../middleware/requireLogin.js';
 import Post from '../models/post.js';
 
 
+router.get('/allposts', (req,res)=>{
+    Post.find()
+    .then(posts=>{
+        res.json({posts})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
+
 router.post('/createpost', requiredLogin, (req, res)=>{
     const {title, body} = req.body;
 
