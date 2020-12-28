@@ -7,7 +7,7 @@ import Post from '../models/post.js';
 
 router.get('/allposts', (req,res)=>{
     Post.find()
-    .populate('postedBy', 'id, name')
+    .populate('postedBy', '_id, name')
     .then(posts=>{
         res.json({posts})
     })
@@ -30,6 +30,17 @@ router.post('/createpost', requiredLogin, (req, res)=>{
     })
     post.save().then(result=>{
         res.json({post:result})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
+
+router.get('/myposts',requiredLogin, (req, res)=>{
+    Post.find({postedBy:req.user.id})
+    .populate('postedBy', '_id, name')
+    .then(myposts=>{
+        res.json({myposts})
     })
     .catch(err=>{
         console.log(err)
