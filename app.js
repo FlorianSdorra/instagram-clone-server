@@ -8,6 +8,9 @@ const { MONGO_URI } = KEYS;
 // import Post from './models/post.js';
 import userRouter from './routes/User.js';
 import postRouter from './routes/Post.js'
+import cors from 'cors';
+
+app.use(cors());
 
 mongoose.connect(MONGO_URI,{
     useUnifiedTopology: true,
@@ -28,3 +31,5 @@ app.use(userRouter, postRouter);
 app.listen(PORT, ()=>{
     console.log("server is running on port", PORT)
 });
+
+
