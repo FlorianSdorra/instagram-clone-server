@@ -1,11 +1,12 @@
 import express from 'express';
 const router = express.Router();
 import mongoose from 'mongoose';
-import requiredLogin from '../middleware/requireLogin.js';
+import requireLogin from '../middleware/requireLogin.js';
 import Post from '../models/post.js';
 
 
-router.get('/allposts', (req,res)=>{
+
+router.get('/allposts', requireLogin, (req,res)=>{
     Post.find()
     .populate('postedBy', '_id, name')
     .then(posts=>{
@@ -16,17 +17,18 @@ router.get('/allposts', (req,res)=>{
     })
 })
 
-router.post('/createpost', requiredLogin, (req, res)=>{
+router.post('/createpost', requireLogin, (req, res)=>{
+    console.log(req.body);
     const {title, body, pic} = req.body;
 
     if(!title || !body || !pic){
-        return res.status(422).json({errror: "Please add all the fields"})
+        return res.status(422).json({errror:"Please add all the fields"})
     }
     req.user.password = undefined;
     const post = new Post({
         title,
         body,
-        pic,
+        photo:pic,
         postedBy: req.user
     })
     post.save().then(result=>{
@@ -37,7 +39,7 @@ router.post('/createpost', requiredLogin, (req, res)=>{
     })
 })
 
-router.get('/myposts',requiredLogin, (req, res)=>{
+router.get('/myposts',requireLogin, (req, res)=>{
     Post.find({postedBy:req.user.id})
     .populate('postedBy', '_id, name')
     .then(myposts=>{
@@ -45,6 +47,34 @@ router.get('/myposts',requiredLogin, (req, res)=>{
     })
     .catch(err=>{
         console.log(err)
+    })
+})
+
+router.put('/like', requireLogin,(req,res)=>{
+    Post.findByIdAndUpdate(req.body.postId,{
+        $push:{likes:req.user._id}
+    },{
+        new:true
+    }).exec((err, result)=>{
+        if(err){
+            return res.status(422).json({err:err})
+        }else{
+            res.json(result)
+        }
+    })
+})
+
+router.put('/unlike', requireLogin,(req,res)=>{
+    Post.findByIdAndUpdate(req.body.postId,{
+        $push:{likes:req.user._id}
+    },{
+        new:true
+    }).exec((err, result)=>{
+        if(err){
+            return res.status(422).json({err:err})
+        }else{
+            res.json(result)
+        }
     })
 })
 
