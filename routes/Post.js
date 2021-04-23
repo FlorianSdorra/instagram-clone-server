@@ -57,7 +57,7 @@ router.put('/like', requireLogin,(req,res)=>{
         new:true
     }).exec((err, result)=>{
         if(err){
-            return res.status(422).json({err:err})
+            return res.status(422).json({error:err})
         }else{
             res.json(result)
         }
@@ -66,12 +66,32 @@ router.put('/like', requireLogin,(req,res)=>{
 
 router.put('/unlike', requireLogin,(req,res)=>{
     Post.findByIdAndUpdate(req.body.postId,{
-        $push:{likes:req.user._id}
+        $pull:{likes:req.user._id}
     },{
         new:true
     }).exec((err, result)=>{
         if(err){
             return res.status(422).json({err:err})
+        }else{
+            res.json(result)
+        }
+    })
+})
+
+router.put('/comment', requireLogin,(req,res)=>{
+    const comment = {
+        text:req.body.text,
+        postedBy:req.user._id
+    }
+    Post.findByIdAndUpdate(req.body.postId,{
+        $push:{comment}
+    },{
+        new:true
+    })
+    .populate("comments.postedBy","_id name")
+    .exec((err, result)=>{
+        if(err){
+            return res.status(422).json({error:err})
         }else{
             res.json(result)
         }
