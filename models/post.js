@@ -26,7 +26,7 @@ const postSchema = new Schema({
         text:String,
         postedBy:{type:ObjectId, ref:"User"}
         }
-    ]
+    ],
     postedBy:{
         type:ObjectId,
         ref:"User"
