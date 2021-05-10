@@ -100,8 +100,8 @@ router.put('/comment', requireLogin,(req,res)=>{
     })
 })
 
-router.delete('/deletepost/:postId', requireLogin, (req, res)=>{
-    Post.findOne({_id:req.params.postId})
+router.delete('/deletepost/:postid', requireLogin, (req, res)=>{
+    Post.findOne({_id:req.params.postid})
     .populate("postedBy","_id")
     .exec((err, post)=>{
         if(err || !post){
@@ -117,6 +117,26 @@ router.delete('/deletepost/:postId', requireLogin, (req, res)=>{
         }
     })
 })
+
+router.delete('/deletecomment/:postid/:commentid', requireLogin,(req,res)=>{
+    const comment = { _id: req.params.commentid }
+    Post.findByIdAndUpdate(req.params.postid,{
+        $pull:{comments:comment}
+    },{
+        new:true
+    })
+    .populate("comments.postedBy","_id name")
+    .populate("postedBy", "_id name")
+    .exec((err, result)=>{
+        if(err || !result){
+            return res.status(422).json({error:err})
+        }else{
+            res.json(result)
+        }
+    })
+})
+
+
 
 const postRouter = router;
 
