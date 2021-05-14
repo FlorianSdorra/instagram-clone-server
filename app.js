@@ -6,8 +6,9 @@ import KEYS  from './keys.js';
 const { MONGO_URI } = KEYS;
 // import User from './models/user.js';
 // import Post from './models/post.js';
-import userRouter from './routes/User.js';
-import postRouter from './routes/Post.js'
+import authRouter from './routes/auth.js';
+import postRouter from './routes/post.js';
+import userRouter from './routes/user.js';
 import cors from 'cors';
 
 app.use(cors());
@@ -26,7 +27,7 @@ mongoose.connection.on('error',(err)=>{
 })
 
 app.use(express.json());
-app.use(userRouter, postRouter);
+app.use(authRouter, postRouter, userRouter);
 
 app.listen(PORT, ()=>{
     console.log("server is running on port", PORT)

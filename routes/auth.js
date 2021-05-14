@@ -70,6 +70,6 @@ router.post('/signin',(req, res)=>{
     })
 })
 
-const userRouter = router
+const authRouter = router
 
-export default userRouter
+export default authRouter
