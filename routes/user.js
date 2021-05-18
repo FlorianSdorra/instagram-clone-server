@@ -5,7 +5,7 @@ import requireLogin from '../middleware/requireLogin.js';
 import Post from '../models/post.js';
 import User from '../models/user.js';
 
-router.get('/user/:id',(req,res)=>{
+router.get('/user/:id',requireLogin,(req,res)=>{
     User.findOne({_id:req.params.id})
     .select("-password")
     .then(user=>{
