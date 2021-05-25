@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 const {Schema} = mongoose;
-const { ObjectId} = mongoose.Schema.Types
+const { ObjectId} = mongoose.Schema.Types;
 
 const postSchema = new Schema({
     title:{

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 const {Schema} = mongoose;
+const { ObjectId} = mongoose.Schema.Types;
 
 const userSchema = new Schema ({
     name:{
@@ -13,7 +14,9 @@ const userSchema = new Schema ({
     password:{
         type: String,
         required: true
-    }
+    },
+    followers:[{type:ObjectId,ref:"User"}],
+    following:[{type:ObjectId,ref:"User"}]
 })
 
 const User = mongoose.model('User', userSchema);
