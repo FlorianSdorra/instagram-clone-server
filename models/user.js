@@ -15,6 +15,10 @@ const userSchema = new Schema ({
         type: String,
         required: true
     },
+    pic:{
+        type:String,
+        default:"https://res.cloudinary.com/dec8enu1mx13x12/image/upload/v1623160132/no-image-icon_i0fzlw.svg"
+    },
     followers:[{
         type:ObjectId,
         ref:"User"
